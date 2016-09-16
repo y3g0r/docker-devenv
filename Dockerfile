@@ -23,18 +23,18 @@ RUN apt-get update \
         zlib1g-dev \
         zsh
 
-RUN useradd --create-home --shell $(which zsh) yegor \
+RUN useradd --create-home --shell $(which bash) yegor \
     && echo 'yegor:123' | chpasswd \
     && adduser yegor sudo
 USER yegor
 WORKDIR /home/yegor
 
 # add vimrc
-RUN git clone https://github.com/y3g0r/.dotfiles.git && ./.dotfiles/install.sh 
+RUN git clone https://github.com/y3g0r/.dotfiles.git && ./.dotfiles/install.sh
 RUN git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 RUN git clone https://github.com/Valloric/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe \
     && cd ~/.vim/bundle/YouCompleteMe && git submodule update --init --recursive
 RUN vim +PluginInstall +qall
 RUN cd ~/.vim/bundle/YouCompleteMe && ./install.py --clang-completer
-ENV TERM=XTERM-256color
-CMD zsh
+ENV TERM=xterm-256color
+CMD bash
